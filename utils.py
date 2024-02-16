@@ -1,19 +1,14 @@
-from langchain_community.utilities import SQLDatabase
-
-from langchain_core.prompts import PromptTemplate
-
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_experimental.sql.base import SQLDatabaseChain
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_community.utilities import SQLDatabase
-from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
-
 import configparser
 import os
 
-import retrying
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+from langchain_community.utilities import SQLDatabase
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_experimental.sql.base import SQLDatabaseChain
+from langchain_google_genai import ChatGoogleGenerativeAI
+
 
 def read_properties_file(file_path):
     # Check if the file exists
@@ -27,20 +22,20 @@ def read_properties_file(file_path):
     config.read(file_path)
     
     # Access values
-    db_path = config['DEFAULT']['db_path']
+    local_db_path = config['DEFAULT']['local_db_path']
     gemini_api_key = config['DEFAULT']['gemini_api_key']
     
-    return db_path, gemini_api_key
+    return local_db_path, gemini_api_key
 
 def get_property():
     # Path to the properties file
     file_path = 'config.properties'
 
     try:
-        db_path, gemini_api_key = read_properties_file(file_path)
-        print("Database path:", db_path)
+        local_db_path, gemini_api_key = read_properties_file(file_path)
+        print("Database path:", local_db_path)
         print("Gemini API Key", gemini_api_key)
-        return db_path, gemini_api_key
+        return local_db_path, gemini_api_key
     except FileNotFoundError as e:
         print(e)
         raise e
@@ -59,8 +54,8 @@ def get_llm(gemini_api_key):
     
     return llm
 
-def db_connection(db_path):
-    db = SQLDatabase.from_uri(f"sqlite:///{db_path}")
+def db_connection(local_db_path):
+    db = SQLDatabase.from_uri(f"sqlite:///{local_db_path}")
     print(db.dialect)
     print(db.get_usable_table_names())
     resp = db.run("SELECT * FROM Employees LIMIT 10;")
@@ -109,6 +104,3 @@ def create_conversational_chain():
     except Exception as e:
         raise e
     return  db_chain, chain
-
-
-
