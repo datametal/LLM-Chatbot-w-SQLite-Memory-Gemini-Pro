@@ -1,6 +1,6 @@
 .env
 config.properties
-.venv
+#.venv
 .trunk
 __pycache__
 # Byte-compiled / optimized / DLL files
@@ -126,7 +126,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+## .venv
 env/
 venv/
 ENV/
