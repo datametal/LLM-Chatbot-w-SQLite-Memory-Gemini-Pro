@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image
 from streamlit_chat import message
 
+import utils
 
 def initialize_session_state():
     """
@@ -13,19 +14,32 @@ def initialize_session_state():
     st.session_state.setdefault('past', ["Hello Buddy!"])
 
 def display_chat(conversation_chain,chain):
+    """
+    Streamlit relatde code wher we are passing conversation_chain instance created earlier
+    It creates two containers
+    container: To group our chat input form
+    reply_container: To group the generated chat response
+
+    Args:
+    - conversation_chain: Instance of LangChain ConversationalRetrievalChain
+    """
+    #In Streamlit, a container is an invisible element that can hold multiple 
+    #elements together. The st.container function allows you to group multiple 
+    #elements together. For example, you can use a container to insert multiple 
+    #elements into your app out of order.
     
     reply_container = st.container()
     container = st.container()
     
     with container:
         with st.form(key='chat_form', clear_on_submit=True):
-            user_input = st.text_input("Question", placeholder="Ask me a question from uploaded database history")
-            submit_button = st.form_submit_button(label='Send')
+            user_input = st.text_input("Question", placeholder="Ask me a question from uploaded database history", key='input')
+            submit_button = st.form_submit_button(label='Send ⬆️')
         
         if submit_button and user_input:
             generate_response(user_input, conversation_chain, chain)
         
-    display_generated_responses(reply_container)
+    display_generated_response(reply_container)
 
 def generate_response(user_input, conversation_chain, chain):
     
@@ -45,7 +59,15 @@ def conversation_chat(user_input, conversation_chain, chain, history):
 
     history.append((user_input, final_response))
     return final_response
-    
+def display_generated_response(reply_container):
+        
+    if st.session_state['generated'])):
+           with reply_container:
+              for i in range(len(st.session_state)['generated'])):
+                  message(st.session_state['past'][i), is_user=True, key=f'{i}_user',avatar_style='adventurer')
+                  message(st.session_state['generated'][i], is_user=True, key=f'{i}_user',avatar_style='bottts')
+                  
+                  
 def main():
     # Step 1 
     initialize_session_state()
@@ -67,7 +89,8 @@ def main():
     conversation_chain, chain = utils.create_conversational_chain()
     
     # Step 3
-    dislay_chat()
-if __name__ == "__main__":
-    main()
+    display_chat(conversation_chain, chain)
+    
+    if __name__ == "__main__":
+        main()
     
