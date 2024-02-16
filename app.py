@@ -4,6 +4,7 @@ from streamlit_chat import message
 
 import utils
 
+
 def initialize_session_state():
     """
     Session state is a way to share variables between runs, for each user session.
@@ -61,10 +62,10 @@ def conversation_chat(user_input, conversation_chain, chain, history):
     return final_response
 def display_generated_response(reply_container):
         
-    if st.session_state['generated'])):
+    if st.session_state['generated']:
            with reply_container:
-              for i in range(len(st.session_state)['generated'])):
-                  message(st.session_state['past'][i), is_user=True, key=f'{i}_user',avatar_style='adventurer')
+              for i in range(len(st.session_state['generated'])):
+                  message(st.session_state['past'][i], is_user=True, key=f'{i}_user',avatar_style='adventurer')
                   message(st.session_state['generated'][i], is_user=True, key=f'{i}_user',avatar_style='bottts')
                   
                   

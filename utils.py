@@ -3,7 +3,8 @@ import os
 
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
-from langchain.sql_database import SQLDatabase, SQLDatabaseChain
+from langchain.sql_database import SQLDatabase
+from langchain_experimental.sql.base import SQLDatabaseChain
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 #from SQLDatabase import SQLDatabase
