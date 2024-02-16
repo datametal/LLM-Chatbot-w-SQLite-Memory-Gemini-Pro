@@ -1,0 +1,8 @@
+langchain
+langchain-community
+langchain-experimental
+langchain-google-genai
+google-generativeai
+langchain-google-genai
+streamlit
+streamlit-chat
