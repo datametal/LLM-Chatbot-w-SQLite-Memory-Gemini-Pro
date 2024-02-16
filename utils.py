@@ -1,19 +1,14 @@
-from langchain_community.utilities import SQLDatabase
-
-from langchain_core.prompts import PromptTemplate
-
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_experimental.sql.base import SQLDatabaseChain
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_community.utilities import SQLDatabase
-from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
-
 import configparser
 import os
 
-import retrying
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+from langchain_community.utilities import SQLDatabase
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_experimental.sql.base import SQLDatabaseChain
+from langchain_google_genai import ChatGoogleGenerativeAI
+
 
 def read_properties_file(file_path):
     # Check if the file exists
@@ -109,6 +104,3 @@ def create_conversational_chain():
     except Exception as e:
         raise e
     return  db_chain, chain
-
-
-
