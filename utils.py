@@ -22,20 +22,20 @@ def read_properties_file(file_path):
     config.read(file_path)
     
     # Access values
-    local_db_path = config['DEFAULT']['local_db_path']
+    db_path = config['DEFAULT']['db_path']
     gemini_api_key = config['DEFAULT']['gemini_api_key']
     
-    return local_db_path, gemini_api_key
+    return db_path, gemini_api_key
 
 def get_property():
     # Path to the properties file
     file_path = 'config.properties'
 
     try:
-        local_db_path, gemini_api_key = read_properties_file(file_path)
-        print("Database path:", local_db_path)
+        db_path, gemini_api_key = read_properties_file(file_path)
+        print("Database path:", db_path)
         print("Gemini API Key", gemini_api_key)
-        return local_db_path, gemini_api_key
+        return db_path, gemini_api_key
     except FileNotFoundError as e:
         print(e)
         raise e
@@ -54,8 +54,8 @@ def get_llm(gemini_api_key):
     
     return llm
 
-def db_connection(local_db_path):
-    db = SQLDatabase.from_uri(f"sqlite:///{local_db_path}")
+def db_connection(db_path):
+    db = SQLDatabase.from_uri(f"sqlite:///{db_path}")
     print(db.dialect)
     print(db.get_usable_table_names())
     resp = db.run("SELECT * FROM Employees LIMIT 10;")
